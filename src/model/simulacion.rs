@@ -29,6 +29,7 @@ impl<'a> Simulacion<'a> {
         let mut generacion: Vec<Cromosoma> = Vec::with_capacity(self.individuos);
         let mut mejor = Cromosoma::new();
         mejor.fitness = 1000;
+
         // Generacion inicial
         for _ in 0..self.individuos {
             let mut cromosoma = Cromosoma::new();
@@ -188,8 +189,9 @@ impl<'a> Simulacion<'a> {
     fn errores(&self, cromosoma: &Cromosoma) -> usize {
         let mut errores = 0;
         for (i, row) in (self.ma.0).iter().enumerate() {
-            for j in row {
-                if cromosoma.genes.get(i) == cromosoma.genes.get(*j) {
+            for provincia in row {
+                let index = provincia -1;
+                if cromosoma.genes.get(i).unwrap() == cromosoma.genes.get(index).unwrap() {
                     errores += 1;
                 }
             }
