@@ -25,7 +25,7 @@ impl<'a> Simulacion<'a> {
         }
     }
 
-    pub fn simular(&self) {
+    pub fn simular(&self) -> Cromosoma {
         let mut generacion: Vec<Cromosoma> = Vec::with_capacity(self.individuos);
         let mut mejor = Cromosoma::new();
         mejor.fitness = 1000;
@@ -43,6 +43,9 @@ impl<'a> Simulacion<'a> {
             generacion.sort_by_key(|g: &Cromosoma| g.fitness as i32); // Orden ascendente
             if generacion.get(0).unwrap().fitness < mejor.fitness {
                 mejor = generacion.get(0).unwrap().clone();
+                if mejor.fitness == 4 {
+                    return mejor
+                }
             }
 
             // seleccion 
@@ -107,7 +110,7 @@ impl<'a> Simulacion<'a> {
         }
 
         // Resultado
-        println!("Resultado");
+        println!("Resultado luego de {} generaciones", self.generaciones);
         generacion.sort_by_key(|g: &Cromosoma| g.fitness as i32); // Orden ascendente
         for c in &generacion[..10] {
             let colores = c.genes.iter()
@@ -118,7 +121,7 @@ impl<'a> Simulacion<'a> {
                 });
             println!("{:?}, colores: {}", c, colores.len());
         }
-        println!("El mejor fue: {:?}", mejor);
+        mejor
     }
 
     pub fn cruza_1p(&self, p1: &Cromosoma, p2: &Cromosoma, p: usize) -> (Cromosoma, Cromosoma) {

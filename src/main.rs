@@ -1,6 +1,6 @@
 use std::process;
 
-use crate::model::{Cromosoma, MatrizAdyacencia, Simulacion};
+use crate::model::Simulacion;
 
 mod model;
 fn main() {
@@ -12,12 +12,14 @@ fn main() {
             process::exit(1);
         },
         Ok(matriz) => {
-            println!("{:?}", matriz);
-            let simulacion = Simulacion::new(300, 200, 0.9, 1.0, &matriz);
-            //let mut cromosoma = Cromosoma::new();
-            //let fit = simulacion.fit(&mut cromosoma);
-            //println!("Fit de {:?}: {}", &cromosoma, fit);
-            simulacion.simular();
+            let simulacion = Simulacion::new(20000, 200, 0.7, 0.7, &matriz);
+            let mejor = simulacion.simular();
+
+            println!("El mejor fue: {:?}", mejor);
+            // Esto tiro hace un rato:
+            // El mejor fue: Cromosoma { genes: [11, 17, 17, 25, 4, 3, 4, 11, 11, 25, 25, 3, 25, 11, 4, 25, 11, 17, 3, 25, 11, 11, 3], fitness: 5 }
+
+
         }
     }
 }
