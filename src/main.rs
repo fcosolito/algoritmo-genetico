@@ -1,6 +1,8 @@
 use std::process;
 
-use crate::model::Simulacion;
+use crate::model::{Cromosoma, Simulacion};
+use csv::Writer;
+use std::error::Error;
 
 mod model;
 fn main() {
@@ -16,11 +18,22 @@ fn main() {
             let mejor = simulacion.simular();
 
             println!("El mejor fue: {:?}", mejor);
-            // Esto tiro hace un rato:
-            // El mejor fue: Cromosoma { genes: [11, 17, 17, 25, 4, 3, 4, 11, 11, 25, 25, 3, 25, 11, 4, 25, 11, 17, 3, 25, 11, 11, 3], fitness: 5 }
 
+            escribir_solucion(&mejor)
 
         }
     }
 }
 
+fn escribir_solucion(cromosoma: &Cromosoma)  {
+    let mut wtr = Writer::from_path("solucion.csv").unwrap();
+
+    // Escribir encabezado
+    wtr.write_record(&["id", "color"]).unwrap();
+
+    for (i, color) in cromosoma.genes.iter().enumerate() {
+        wtr.write_record(&[&(i+1).to_string(), &color.to_string()]).unwrap();
+    }
+
+    wtr.flush().unwrap();
+}
